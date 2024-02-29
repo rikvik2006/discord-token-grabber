@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "build": "pnpm tsc",
     "start": "node ./dist/index.js",
@@ -21,8 +22,12 @@
     "puppeteer-extra-plugin-stealth": "^2.11.2"
   },
   "devDependencies": {
+    "@swc/core": "^1.4.2",
+    "@types/node": "^20.11.24",
+    "eslint": "^8.57.0",
     "nodemon": "^3.1.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "typescript-eslint": "^7.1.0"
   }
 }
