@@ -1,6 +1,8 @@
-import { createBrowser } from "./services/createBrowser";
+import { createBrowser } from "./services/createBrowser.js";
+import dotenv from "dotenv"
 
 const main = () => {
+    dotenv.config()
     createBrowser()
 }
 
