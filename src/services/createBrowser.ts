@@ -1,6 +1,7 @@
 import { Browser, executablePath } from "puppeteer";
 import puppeteer from "puppeteer-extra";
 import StealthPlugin from "puppeteer-extra-plugin-stealth";
+import { closeAboutBlank } from "../helpers/closeAboutBlank.js";
 
 export const createBrowser = async () => {
     const isProductionEnv = process.env.PRODUCTION;
@@ -23,8 +24,8 @@ export const createBrowser = async () => {
 
     let browser: Browser
     try {
-        puppeteer.use(StealthPlugin());
-        browser = await puppeteer.launch({
+        puppeteer.default.use(StealthPlugin());
+        browser = await puppeteer.default.launch({
             executablePath: executablePath,
             userDataDir: userDataDir,
             headless: isProduction,
@@ -34,6 +35,10 @@ export const createBrowser = async () => {
         })
 
         const page = await browser.newPage();
+        const pages = await browser.pages()
+        await closeAboutBlank(pages)
+
+
     } catch (err) {
         console.log(err);
     }
