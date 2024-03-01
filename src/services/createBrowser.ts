@@ -2,6 +2,7 @@ import { Browser, executablePath } from "puppeteer";
 import puppeteer from "puppeteer-extra";
 import StealthPlugin from "puppeteer-extra-plugin-stealth";
 import { closeAboutBlank } from "../helpers/closeAboutBlank.js";
+import { loginOnDiscord } from "./loginOnDiscord.js";
 
 export const createBrowser = async () => {
     const isProductionEnv = process.env.PRODUCTION;
@@ -35,10 +36,10 @@ export const createBrowser = async () => {
         })
 
         const page = await browser.newPage();
-        const pages = await browser.pages()
-        await closeAboutBlank(pages)
+        const pages = await browser.pages();
+        await closeAboutBlank(pages);
 
-
+        await loginOnDiscord(page);
     } catch (err) {
         console.log(err);
     }
