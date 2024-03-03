@@ -1,17 +1,24 @@
 import { Page } from "puppeteer";
 import { path, createCursor, ClickOptions } from "ghost-cursor";
 import { randomRange } from "../helpers/randomRange.js";
+import { waitForDebugger } from "inspector";
 
-export const loginOnDiscord = async (page: Page) => {
+export const loginOnDiscord = async (page: Page, credential: string) => {
     await page.goto("https://discord.com/login")
     const cursor = createCursor(page);
 
+    const clickOptions: ClickOptions = {
+        hesitate: randomRange(200, 900),
+        waitForClick: randomRange(20, 100),
+        moveDelay: randomRange(20, 50)
+    }
     await page.waitForSelector(".wrapper__2d9b1")
-    await page.evaluate(() => {
-        console.log(localStorage)
-        localStorage.removeItem("MultiAccountStore")
-    })
-    await page.reload()
+    await page.waitForSelector("button.button_afdfd9.lookLink__93965")
+    const addAccountButton = await page.$("button.button_afdfd9.lookLink__93965");
+
+    if (addAccountButton) {
+        await cursor.click(addAccountButton, clickOptions);
+    }
 
     const form = await page.waitForSelector("form.authBoxExpanded_e57789")
     if (!form) throw new Error("unable to select form element Selector: form.authBoxExpanded_e57789")
@@ -22,12 +29,20 @@ export const loginOnDiscord = async (page: Page) => {
     if (!emailInput) throw new Error("unable to select emailInput element. Selector: input.inputDefault__80165[name='email']")
     if (!passwordInput) throw new Error("unable to select passwordInput element. Selector: input.inputDefault__80165[name='password']")
 
-    const clickOptions: ClickOptions = {
-        hesitate: randomRange(200, 900),
-        waitForClick: randomRange(20, 100),
-        moveDelay: randomRange(20, 50)
-    }
+    console.log(`⭐ Credential: ${credential}`)
+    const credentialSplit = credential.trim().split(":")
+    console.log(`⭐ Credential split: ${credentialSplit}`)
+    const userMail = credentialSplit[0]
+    const userPassword = credentialSplit[1]
     await cursor.click(emailInput, clickOptions);
+    await emailInput.type(userMail);
+    await cursor.click(passwordInput, clickOptions);
+    await passwordInput.type(userPassword);
 
+    await form.waitForSelector("button.marginBottom8_f4aae3.button__47891");
+    const loginButton = await form.$("button.marginBottom8_f4aae3.button__47891");
 
+    if (!loginButton) throw new Error("unable to select the login button Selector: button.marginBottom8_f4aae3.button__47891")
+
+    await cursor.click(loginButton, clickOptions);
 }   

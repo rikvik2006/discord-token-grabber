@@ -3,6 +3,7 @@ import puppeteer from "puppeteer-extra";
 import StealthPlugin from "puppeteer-extra-plugin-stealth";
 import { closeAboutBlank } from "../helpers/closeAboutBlank.js";
 import { loginOnDiscord } from "./loginOnDiscord.js";
+import fs from "fs";
 
 export const createBrowser = async () => {
     const isProductionEnv = process.env.PRODUCTION;
@@ -39,7 +40,12 @@ export const createBrowser = async () => {
         const pages = await browser.pages();
         await closeAboutBlank(pages);
 
-        await loginOnDiscord(page);
+        const buffer = fs.readFileSync("./data/loginInfo.txt");
+        const credentials = buffer.toString('utf-8').split("\n");
+
+        for (let credential of credentials) {
+            await loginOnDiscord(page, credential);
+        }
     } catch (err) {
         console.log(err);
     }
