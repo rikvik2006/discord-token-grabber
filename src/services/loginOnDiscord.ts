@@ -2,6 +2,7 @@ import { Page } from "puppeteer";
 import { path, createCursor, ClickOptions } from "ghost-cursor";
 import { randomRange } from "../helpers/randomRange.js";
 import { waitForDebugger } from "inspector";
+import { getTokenController } from "./getTokenController.js";
 
 export const loginOnDiscord = async (page: Page, credential: string) => {
     await page.goto("https://discord.com/login")
@@ -13,11 +14,16 @@ export const loginOnDiscord = async (page: Page, credential: string) => {
         moveDelay: randomRange(20, 50)
     }
     await page.waitForSelector(".wrapper__2d9b1")
-    await page.waitForSelector("button.button_afdfd9.lookLink__93965")
-    const addAccountButton = await page.$("button.button_afdfd9.lookLink__93965");
 
-    if (addAccountButton) {
-        await cursor.click(addAccountButton, clickOptions);
+    try {
+        await page.waitForSelector("button.button_afdfd9.lookLink__93965", { timeout: 3000 })
+        const addAccountButton = await page.$("button.button_afdfd9.lookLink__93965");
+
+        if (addAccountButton) {
+            await cursor.click(addAccountButton, clickOptions);
+        }
+    } catch (err) {
+        console.log(err);
     }
 
     const form = await page.waitForSelector("form.authBoxExpanded_e57789")
@@ -31,7 +37,7 @@ export const loginOnDiscord = async (page: Page, credential: string) => {
 
     console.log(`⭐ Credential: ${credential}`)
     const credentialSplit = credential.trim().split(":")
-    console.log(`⭐ Credential split: ${credentialSplit}`)
+    // console.log(`⭐ Credential split: ${credentialSplit}`)
     const userMail = credentialSplit[0]
     const userPassword = credentialSplit[1]
     await cursor.click(emailInput, clickOptions);
@@ -45,4 +51,5 @@ export const loginOnDiscord = async (page: Page, credential: string) => {
     if (!loginButton) throw new Error("unable to select the login button Selector: button.marginBottom8_f4aae3.button__47891")
 
     await cursor.click(loginButton, clickOptions);
+    await getTokenController(page)
 }   
