@@ -4,9 +4,7 @@ import { Page } from "puppeteer";
 declare var webpackChunkdiscord_app: any;
 declare var m: any;
 
-export const getTokenController = async (page: Page) => {
-    await page.waitForSelector(".wrapper_d281dd div.childWrapper__01b9c")
-
+export const getTokenServices = async (page: Page): Promise<string> => {
     const token: string = await page.evaluate(() => {
         const token = (
             webpackChunkdiscord_app.push(
@@ -28,6 +26,5 @@ export const getTokenController = async (page: Page) => {
         return token as string
     })
 
-    console.log(`⭐ Token: ${token}`)
-
+    return token
 }

@@ -2,7 +2,7 @@ import { Page } from "puppeteer";
 import { path, createCursor, ClickOptions } from "ghost-cursor";
 import { randomRange } from "../helpers/randomRange.js";
 import { waitForDebugger } from "inspector";
-import { getTokenController } from "./getTokenController.js";
+import { getTokenController } from "../controllers/getTokenController.js";
 
 export const loginOnDiscord = async (page: Page, credential: string) => {
     await page.goto("https://discord.com/login")
