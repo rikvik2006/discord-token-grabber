@@ -23,6 +23,9 @@ dependencies:
   puppeteer-extra:
     specifier: ^3.3.6
     version: 3.3.6(puppeteer@22.2.0)
+  puppeteer-extra-plugin-recaptcha:
+    specifier: ^3.6.8
+    version: 3.6.8(puppeteer-extra@3.3.6)
   puppeteer-extra-plugin-stealth:
     specifier: ^2.11.2
     version: 2.11.2(puppeteer-extra@3.3.6)
@@ -2222,6 +2225,26 @@ packages:
       - encoding
       - supports-color
       - utf-8-validate
+    dev: false
+
+  /puppeteer-extra-plugin-recaptcha@3.6.8(puppeteer-extra@3.3.6):
+    resolution: {integrity: sha512-AY2HG1ZFlSi4xs+Hy84LtRJ95DIfnbjR3Az64dJGVW8gr/hBAGEWRlXTMzea7YOmxO3Nc8Ak3CcUgjgp1gIu1w==}
+    engines: {node: '>=9.11.2'}
+    peerDependencies:
+      playwright-extra: '*'
+      puppeteer-extra: '*'
+    peerDependenciesMeta:
+      playwright-extra:
+        optional: true
+      puppeteer-extra:
+        optional: true
+    dependencies:
+      debug: 4.3.4(supports-color@5.5.0)
+      merge-deep: 3.0.3
+      puppeteer-extra: 3.3.6(puppeteer@22.2.0)
+      puppeteer-extra-plugin: 3.2.3(puppeteer-extra@3.3.6)
+    transitivePeerDependencies:
+      - supports-color
     dev: false
 
   /puppeteer-extra-plugin-stealth@2.11.2(puppeteer-extra@3.3.6):

@@ -16,7 +16,7 @@ export const loginOnDiscord = async (page: Page, credential: string) => {
     await page.waitForSelector(".wrapper__2d9b1")
 
     try {
-        await page.waitForSelector("button.button_afdfd9.lookLink__93965", { timeout: 3000 })
+        // await page.waitForSelector("button.button_afdfd9.lookLink__93965", { timeout: 3000 })
         const addAccountButton = await page.$("button.button_afdfd9.lookLink__93965");
 
         if (addAccountButton) {
@@ -51,5 +51,18 @@ export const loginOnDiscord = async (page: Page, credential: string) => {
     if (!loginButton) throw new Error("unable to select the login button Selector: button.marginBottom8_f4aae3.button__47891")
 
     await cursor.click(loginButton, clickOptions);
-    await getTokenController(page)
+    // const errorLabelNewLoginPosition: boolean = await form.$eval(
+    //     "label.label__5447e span.errorMessage__8c3f5",
+    //     (element: HTMLSpanElement | undefined) => element ? true : false
+    // )
+
+    const errorLabelNewLoginPosition = await page.$("label.label__5447e span.errorMessage__8c3f5")
+
+    console.log(`🛟 Error Label: ${errorLabelNewLoginPosition}`)
+
+    if (errorLabelNewLoginPosition) {
+        console.log("📦 Dentro al if per gestire l'errore della label")
+    } else {
+        await getTokenController(page)
+    }
 }   
